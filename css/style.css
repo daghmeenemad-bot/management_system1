@@ -1,97 +1,433 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap');
-:root { --primary: #1e3a8a; --accent: #166534; --card-bg: #ffffff; }
-body { 
-    font-family: 'Cairo', sans-serif; 
-    background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
-                url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920&auto=format&fit=crop');
-    background-size: cover; background-position: center; background-attachment: fixed;
-    color: #0f172a; margin: 0; padding: 20px; min-height: 100vh;
-}
-.header { text-align: center; margin-bottom: 25px; color: white; text-shadow: 0 3px 6px rgba(0,0,0,0.6); }
-.header h1 { margin: 0; font-size: 28px; font-weight: 900; }
-.header p { margin: 5px 0 0; font-size: 15px; font-weight: 700; color: #e2e8f0; }
-.card { 
-    background: var(--card-bg); padding: 25px; border-radius: 16px; 
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4); max-width: 900px; margin: 20px auto; border: 3px solid #cbd5e1;
-}
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.form-group { display: flex; flex-direction: column; }
-.form-group.full-width { grid-column: span 2; }
-label { font-weight: 900; margin-bottom: 6px; color: #0f172a; font-size: 13px; }
-input, select { 
-    width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; 
-    box-sizing: border-box; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700; 
-    background: #f1f5f9; color: #0f172a; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
-}
-input:focus, select:focus { outline: none; border-color: var(--primary); background: #fff; }
-button { 
-    background: var(--primary); color: white; padding: 12px 20px; border: none; border-radius: 8px; 
-    width: 100%; cursor: pointer; font-weight: 900; font-family: 'Cairo', sans-serif; font-size: 15px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.3s; text-align: center; white-space: nowrap;
-}
-button:hover { background: #172554; }
-h2, h3 { font-weight: 900; color: #1e293b; margin-top: 0; font-size: 18px; }
-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 8px; overflow: hidden; }
-th { background: #1e3a8a; color: white; padding: 12px; text-align: center; font-size: 13px; font-weight: 900; }
-td { padding: 10px; text-align: center; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 700; color: #1e293b; }
-.loading { text-align: center; padding: 20px; font-weight: 900; color: #1e3a8a; }
 
-@media print {
-    body { background: white !important; color: black !important; padding: 0 !important; }
-    .header, #login-screen, #secretary-dashboard, #admin-login-area, #admin-panel, .no-print { display: none !important; }
-    .print-container { display: block !important; width: 100%; padding: 20px; box-sizing: border-box; }
-    .print-box { border: 2px solid #000; padding: 20px; border-radius: 10px; font-family: 'Cairo', sans-serif; }
+:root {
+    --primary: #1e3a8a;
+    --accent: #166534;
+    --card-bg: #ffffff;
 }
-.print-container { display: none; }
 
-.card--login { text-align: center; max-width: 480px; }
-.card--secretary { max-width: 800px; }
-.card--admin { max-width: 1200px; }
-.is-hidden { display: none; }
+body {
+    font-family: 'Cairo', sans-serif;
+    background:
+        linear-gradient(
+            rgba(15, 23, 42, 0.85),
+            rgba(15, 23, 42, 0.85)
+        ),
+        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920&auto=format&fit=crop');
 
-.login-help { color: #334155; font-size: 13px; font-weight: 700; margin-bottom: 15px; }
-.field-spacing { margin-bottom: 15px; }
-.secretary-login-input { text-align: center; font-size: 15px; padding: 12px; }
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #0f172a;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+    color: white;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.header p {
+    margin: 5px 0 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    max-width: 900px;
+    margin: 20px auto;
+    border: 3px solid #cbd5e1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+label {
+    font-weight: 900;
+    margin-bottom: 6px;
+    color: #0f172a;
+    font-size: 13px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #0f172a;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #ffffff;
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 900;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    text-align: center;
+    white-space: nowrap;
+}
+
+button:hover {
+    background: #172554;
+}
+
+h2,
+h3 {
+    font-weight: 900;
+    color: #1e293b;
+    margin-top: 0;
+    font-size: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background: #1e3a8a;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    font-weight: 900;
+    color: #1e3a8a;
+}
+
+.print-container {
+    display: none;
+}
+
+.card--login {
+    text-align: center;
+    max-width: 480px;
+}
+
+.card--secretary {
+    max-width: 800px;
+}
+
+.card--admin {
+    max-width: 1200px;
+}
+
+.is-hidden {
+    display: none;
+}
+
+.login-help {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.field-spacing {
+    margin-bottom: 15px;
+}
+
+.secretary-login-input {
+    text-align: center;
+    font-size: 15px;
+    padding: 12px;
+}
 
 .welcome-message {
-    background: #dbeafe; color: #1e40af; padding: 12px; border-radius: 8px;
-    margin-bottom: 20px; font-weight: 900; font-size: 14px; border: 2px solid #93c5fd;
-    display: flex; justify-content: space-between; align-items: center;
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 900;
+    font-size: 14px;
+    border: 2px solid #93c5fd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-button.button--danger { background: #dc2626; }
-button.button--compact { width: auto; padding: 6px 15px; font-size: 12px; }
-button.button--submit { margin-top: 20px; background: var(--accent); }
-button.button--admin-entry { background: #334155; width: auto; padding: 12px 25px; }
+button.button--danger {
+    background: #dc2626;
+}
+
+button.button--compact {
+    width: auto;
+    padding: 6px 15px;
+    font-size: 12px;
+}
+
+button.button--submit {
+    margin-top: 20px;
+    background: var(--accent);
+}
+
+button.button--admin-entry {
+    background: #334155;
+    width: auto;
+    padding: 12px 25px;
+}
 
 .management-grid {
-    background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px;
-    border: 1px solid #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
-.management-title { margin-top: 0; color: #1e3a8a; }
-.stacked-input { margin-bottom: 8px; }
-button.button--add { background: #166534; font-size: 13px; padding: 8px; }
 
-.admin-toolbar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-button.toolbar-button { width: auto; padding: 10px 15px; font-size: 13px; }
-button.button--info { background: #0284c7; }
-button.button--success { background: #166534; }
-button.button--muted { background: #64748b; }
+.management-title {
+    margin-top: 0;
+    color: #1e3a8a;
+}
 
-.empty-state { text-align: center; font-weight: 700; color: #64748b; padding: 20px; }
-.error-state { text-align: center; color: red; font-weight: bold; }
-.school-shared { color: #166534; }
-.table-meta { font-size: 11px; color: #64748b; }
-.table-reason { font-size: 11px; color: #0284c7; }
-button.table-action { padding: 5px 8px; font-size: 11px; width: auto; }
-button.table-action--save { background: #166534; margin-bottom: 4px; }
-button.table-action--print { background: #0284c7; }
+.stacked-input {
+    margin-bottom: 8px;
+}
 
-.print-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
-.print-title-primary { margin: 0; font-size: 18px; }
-.print-title-secondary { margin: 5px 0; font-size: 16px; }
-.print-title-main { margin: 5px 0; font-size: 20px; }
-.print-details { font-size: 15px; line-height: 2.2; }
-.print-signatures { margin-top: 40px; display: flex; justify-content: space-between; font-weight: bold; }
-.print-separator { border: 1px dashed #000; margin: 15px 0; }
-.print-status { font-size: 16px; }
+button.button--add {
+    background: #166534;
+    font-size: 13px;
+    padding: 8px;
+}
+
+.admin-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+button.toolbar-button {
+    width: auto;
+    padding: 10px 15px;
+    font-size: 13px;
+}
+
+button.button--info {
+    background: #0284c7;
+}
+
+button.button--success {
+    background: #166534;
+}
+
+button.button--muted {
+    background: #64748b;
+}
+
+.empty-state {
+    text-align: center;
+    font-weight: 700;
+    color: #64748b;
+    padding: 20px;
+}
+
+.error-state {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+.school-shared {
+    color: #166534;
+}
+
+.table-meta {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.table-reason {
+    font-size: 11px;
+    color: #0284c7;
+}
+
+button.table-action {
+    padding: 5px 8px;
+    font-size: 11px;
+    width: auto;
+}
+
+button.table-action--save {
+    background: #166534;
+    margin-bottom: 4px;
+}
+
+button.table-action--print {
+    background: #0284c7;
+}
+
+.print-header {
+    text-align: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.print-title-primary {
+    margin: 0;
+    font-size: 18px;
+}
+
+.print-title-secondary {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.print-title-main {
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.print-details {
+    font-size: 15px;
+    line-height: 2.2;
+}
+
+.print-signatures {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.print-separator {
+    border: 1px dashed #000;
+    margin: 15px 0;
+}
+
+.print-status {
+    font-size: 16px;
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 10px;
+    }
+
+    .form-grid,
+    .management-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .admin-toolbar {
+        flex-direction: column;
+    }
+
+    button.toolbar-button {
+        width: 100%;
+    }
+
+    #admin-table-container {
+        overflow-x: auto;
+    }
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+    }
+
+    .header,
+    #login-screen,
+    #secretary-dashboard,
+    #admin-login-area,
+    #admin-panel,
+    .no-print {
+        display: none !important;
+    }
+
+    .print-container {
+        display: block !important;
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .print-box {
+        border: 2px solid #000;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: 'Cairo', sans-serif;
+    }
+}
