@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة طلبات البدلاء - الشؤون الإدارية</title>
+    <!-- مكتبة التصدير إلى Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="header">
+    <p>مديرية التربية والتعليم - جنوب الخليل</p>
+    <h1>نظام إدارة طلبات البدلاء</h1>
+</div>
+
+<!-- شاشة تسجيل دخول السكرتير -->
+<div class="card card--login" id="login-screen">
+    <h2>🔐 تسجيل دخول السكرتير</h2>
+    <p class="login-help">أدخل رقم السكرتير (أو جزء من الاسم) للبدء:</p>
+    <div class="field-spacing">
+        <input class="secretary-login-input" type="text" id="secretary-input" placeholder="رقم السكرتير أو الاسم...">
+    </div>
+    <button id="login-btn">دخول لتقديم الطلب</button>
+</div>
+
+<!-- لوحة السكرتير -->
+<div class="card card--secretary is-hidden" id="secretary-dashboard">
+    <div class="welcome-message" id="welcome-msg">
+        <span id="welcome-text"></span>
+        <button class="button--danger button--compact" id="secretary-logout-btn">خروج</button>
+    </div>
+
+    <h3>📝 نموذج طلب معلم بديل جديد</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>🏫 المدرسة الأساسية:</label>
+            <select id="school-name"><option value="">-- اختر المدرسة الأساسية --</option></select>
+        </div>
+        <div class="form-group">
+            <label>🏫 المدرسة المشتركة (إن وجدت):</label>
+            <select id="shared-school-name"><option value="">-- اختر المدرسة المشتركة (اختياري) --</option></select>
+        </div>
+        <div class="form-group"><label>👤 اسم المعلم (المنقطع):</label><input type="text" id="teacher-name" placeholder="الاسم ثلاثي..."></div>
+        <div class="form-group"><label>🆔 رقم هوية المعلم:</label><input type="text" id="teacher-id" placeholder="رقم الهوية..."></div>
+        <div class="form-group"><label>📚 الصفوف والمواد:</label><input type="text" id="classes" placeholder="مثال: رياضيات..."></div>
+        <div class="form-group"><label>📅 تاريخ البدء:</label><input type="date" id="start-date"></div>
+        <div class="form-group"><label>📅 تاريخ الانتهاء:</label><input type="date" id="end-date"></div>
+        <div class="form-group"><label>🎓 التخصص المطلوب:</label><input type="text" id="specialization" placeholder="التخصص المطلوب للبديل..."></div>
+        <div class="form-group full-width">
+            <label>📋 سبب الانقطاع / الإجازة:</label>
+            <select id="reason">
+                <option>بدون راتب أقل من 30 يوم</option><option>إجازة أمومة</option><option>إجازة مرضية</option>
+                <option>إعارة</option><option>تكليف</option><option>تكليف بدون اصيل</option><option>إجازة سنوية</option>
+                <option>ايقاف عن العمل</option><option>إجازة حج</option><option>إجازة عمرة</option><option>اعتقال</option>
+                <option>تمديد إجازة بدون راتب</option><option>تمديد إجازة امومة</option>
+            </select>
+        </div>
+    </div>
+    <button class="button--submit" id="submit-btn">📨 إرسال الطلب (إلى الشؤون الإدارية)</button>
+</div>
+
+<!-- زر دخول الشؤون الإدارية -->
+<div class="card card--login" id="admin-login-area">
+    <button class="button--admin-entry" id="admin-login-btn">⚙️ دخول قسم الشؤون الإدارية (خاص بالمدير فقط)</button>
+</div>
+
+<!-- لوحة تحكم الشؤون الإدارية -->
+<div class="card card--admin is-hidden" id="admin-panel">
+    <h2>📊 لوحة تحكم الشؤون الإدارية (متابعة الطلبات والردود - خاصة بك فقط)</h2>
+    
+    <div class="management-grid">
+        <div>
+            <h4 class="management-title">➕ إضافة مدرسة جديدة</h4>
+            <input class="stacked-input" type="text" id="new-school-input" placeholder="اسم المدرسة الجديدة...">
+            <button class="button--add" id="add-school-btn">إضافة المدرسة للنظام</button>
+        </div>
+        <div>
+            <h4 class="management-title">➕ إضافة سكرتير(ة) جديد</h4>
+            <input class="stacked-input" type="text" id="new-sec-name" placeholder="الاسم الرباعي...">
+            <input class="stacked-input" type="text" id="new-sec-id" placeholder="رقم السكرتير / الهوية...">
+            <button class="button--add" id="add-secretary-btn">إضافة السكرتير للنظام</button>
+        </div>
+    </div>
+
+    <div class="admin-toolbar">
+        <button class="toolbar-button button--info" id="refresh-btn">🔄 تحديث البيانات</button>
+        <button class="toolbar-button button--success" id="export-btn">📥 تصدير إلى Excel</button>
+        <button class="toolbar-button button--muted" id="admin-logout-btn">تسجيل الخروج</button>
+    </div>
+    <div id="admin-table-container" class="loading">جاري جلب الطلبات من جوجل شيت...</div>
+</div>
+
+<!-- حاوية الطباعة الرسمية -->
+<div class="print-container" id="printable-area">
+    <div class="print-box">
+        <div class="print-header">
+            <h3 class="print-title-primary">السلطة الوطنية الفلسطينية</h3>
+            <h3 class="print-title-secondary">وزارة التربية والتعليم - مديرية التربية والتعليم / جنوب الخليل</h3>
+            <h2 class="print-title-main">نموذج طلب معلم بديل رسمي</h2>
+        </div>
+        <div class="print-details" id="print-content-details"></div>
+        <div class="print-signatures">
+            <div>ختم المدرسة:<br><br><br>......................................</div>
+            <div>توقيع مدير/ة المدرسة:<br><br><br>......................................</div>
+            <div>قسم الشؤون الإدارية:<br><br><br>......................................</div>
+        </div>
+    </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
